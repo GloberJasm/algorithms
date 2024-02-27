@@ -24,8 +24,6 @@ func sortCharacters(input: String) -> String {
     var result: [UInt8] = []
 
     var chars = Array(input)
-    chars.sort() //O(*n* log *n*) is using quickSort
-//    chars = quickSort(chars)
     for (_, element) in chars.enumerated() {
         if let ascii = element.asciiValue {
             if ascii >= 48 && ascii <= 57 {
@@ -47,7 +45,7 @@ func sortCharacters(input: String) -> String {
     }
     numbers.sort() //O(*n* log *n*) is using quickSort
     numbers.forEach {
-        if $0 > 148 {
+        if $0 >= 148 {
             result.append($0 - 100)
         } else {
             result.append($0)
@@ -56,7 +54,6 @@ func sortCharacters(input: String) -> String {
     result = lowerCaseletters + upperCaseletters + result
     return result.map { String(UnicodeScalar($0)) }.joined() + specialCharacters
 }
-
 //print(sortCharacters(input: "Hel3lopla4Ygroun7d"))
 
 print(sortCharacters(input: "#$%&()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[]^_abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹ŒŽ•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ"))
