@@ -4,40 +4,27 @@ import UIKit
 
 // We can create some variations to reduce the storage like spliting the result list in 3 and insert every element in the section but that will make us iterate through the corresponding section so we can sort it but will slow dow the speed at the end always is one for another
 
-// Thanks chatGPT :)
-//func quickSort<T: Comparable>(_ array: [T]) -> [T] {
-//    guard array.count > 1 else { return array }
-//
-//    let pivot = array[array.count/2]
-//    let less = array.filter { $0 < pivot }
-//    let equal = array.filter { $0 == pivot }
-//    let greater = array.filter { $0 > pivot }
-//
-//    return quickSort(less) + equal + quickSort(greater)
-//}
-
-
 @discardableResult
 func sortCharacters(input: String) -> String {
-    var numbers: [UInt8] = []
-    var upperCaseletters: [UInt8] = []
-    var lowerCaseletters: [UInt8] = []
+    var numbers: [Int16] = []
+    var upperCaseletters: [Int16] = []
+    var lowerCaseletters: [Int16] = []
     var specialCharacters: [Character] = []
-    var result: [UInt8] = []
+    var result: [Int16] = []
 
     var chars = Array(input)
     for (_, element) in chars.enumerated() {
         if let ascii = element.asciiValue {
             if ascii >= 48 && ascii <= 57 {
                 if ascii % 2 == 0 {
-                    numbers.append(ascii + 100) // We just do it to identify it
+                    numbers.append(Int16(ascii) + 100) // We just do it to identify it
                 } else {
-                    numbers.append(ascii)
+                    numbers.append(Int16(ascii))
                 }
             } else if ascii >= 65 && ascii <= 90 { // Upper case
-                upperCaseletters.append(ascii)
+                upperCaseletters.append(Int16(ascii))
             } else if ascii >= 97 && ascii <= 122 { // Lower case
-                lowerCaseletters.append(ascii)
+                lowerCaseletters.append(Int16(ascii))
             } else {
                 specialCharacters.append(element)
             }
@@ -47,6 +34,7 @@ func sortCharacters(input: String) -> String {
 //        }
     }
     numbers.sort() //O(*n* log *n*) is using quickSort
+//    numbers.quickSort()
     numbers.forEach {
         if $0 >= 148 {
             result.append($0 - 100)
@@ -55,7 +43,7 @@ func sortCharacters(input: String) -> String {
         }
     }
     result = lowerCaseletters.sorted() + upperCaseletters.sorted() + result
-    return result.map { String(UnicodeScalar($0)) }.joined() + specialCharacters
+    return result.map { String(UnicodeScalar(UInt8($0))) }.joined() + specialCharacters
 }
 
 @discardableResult
@@ -100,7 +88,7 @@ func sortCharacters2(input: String) -> String {
             }
         }
 //        else {
-//            result.insert(element., at: indexSpecialCharacters)
+//            result.insert(element.utf16, at: indexSpecialCharacters)
 //            indexSpecialCharacters += 1
 //        }
     }
@@ -121,11 +109,18 @@ let input = "#$%&()*+,-./34567‰Š‹ŒŽ•–—˜™š›œžŸ¡¢£80129:;
 print("result1: \(sortCharacters(input: input))")
 print("result2: \(sortCharacters2(input: input))")
 
+var startReading = MemoryManagement.reportMemory()
+
 var result = clock.measure {
     sortCharacters(input: input)
 }
 
 print("time1: \(result)")
+
+var endReading = MemoryManagement.reportMemory()
+print("Memory at end 1: \(endReading - startReading) Kb")
+
+startReading = MemoryManagement.reportMemory()
 
 result = clock.measure {
     sortCharacters2(input: input)
@@ -133,5 +128,6 @@ result = clock.measure {
 
 print("time2: \(result)")
 
-
+endReading = MemoryManagement.reportMemory()
+print("Memory at end 2: \(endReading - startReading) Kb")
 

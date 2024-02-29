@@ -2,28 +2,6 @@
 
 import Foundation
 
-class Queue<T> {
-    private var elements: [T] = []
-    
-    var first: T? {
-        elements.first
-    }
-    
-    var isEmpty: Bool {
-        elements.isEmpty
-    }
-    
-    init() { }
-    
-    func push(_ element: T) {
-        elements.append(element)
-    }
-    
-    func pop() -> T? {
-        isEmpty ? nil : elements.removeFirst()
-    }
-}
-
 @discardableResult
 func isValidParentheses(input: String) -> Bool {
     let totalLenght = input.count
@@ -73,27 +51,44 @@ func isValidParentheses(input: String) -> Bool {
 
 let clock = ContinuousClock()
 
+var startReading = MemoryManagement.reportMemory()
 var input = "87+ 5/2 (87 + 8x +) (( x^2 - 70y)) 8y^3"
 var result = clock.measure {
     print("isValid: \(isValidParentheses(input: input))")
 }
 print("time1: \(result)")
+var endReading = MemoryManagement.reportMemory()
+print("Memory at end 1: \(endReading - startReading) Kb")
 
+
+
+startReading = MemoryManagement.reportMemory()
 input = ")()()()()("
 result = clock.measure {
     print("isValid: \(isValidParentheses(input: input))")
 }
 print("time2: \(result)")
+endReading = MemoryManagement.reportMemory()
+print("Memory at end 2: \(endReading - startReading) Kb")
 
 
+startReading = MemoryManagement.reportMemory()
 input = "87+ 5/2 (87 + 8x +)()()()(( x^2 - 70y)) 8y^3"
 result = clock.measure {
     print("isValid: \(isValidParentheses(input: input))")
 }
 print("time3: \(result)")
+endReading = MemoryManagement.reportMemory()
+print("Memory at end 3: \(endReading - startReading) Kb")
 
+
+
+
+startReading = MemoryManagement.reportMemory()
 input = "87+ 5/2 (87 + 8x +))()()(( x^2 - 70y)) 8y^3"
 result = clock.measure {
     print("isValid: \(isValidParentheses(input: input))")
 }
 print("time4: \(result)")
+endReading = MemoryManagement.reportMemory()
+print("Memory at end 4: \(endReading - startReading) Kb")
